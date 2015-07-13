@@ -63,10 +63,11 @@ class SpeechAPI():
         else:
             raise response.raise_for_status()
 
-    def speech_to_text(self, wavfile, lang="en-US", samplerate=8000, scenarios="ulm"):
-        data = None
-        with open(wavfile, "rb") as f:
-            data = f.read()
+    def speech_to_text(self, binary_or_path, lang="en-US", samplerate=8000, scenarios="ulm"):
+        data = binary_or_path
+        if isinstance(binary_or_path, str):
+            with open(binary_or_path, "rb") as f:
+                data = f.read()
 
         params = {
             "version": "3.0",
