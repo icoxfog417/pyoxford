@@ -55,3 +55,18 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+
+## Directory-based project format
+.idea/
+
+## File-based project format
+*.ipr
+*.iml
+*.iws
+
+venv
+MANIFEST
+account.yaml
+*.wav
