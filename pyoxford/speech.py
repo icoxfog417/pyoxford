@@ -71,7 +71,7 @@ class SpeechAPI():
 
         params = {
             "version": "3.0",
-            "appID": self.UNIQUE_ID,
+            "appID": "D4D52672-91D7-4C74-8AD8-42B1D98141A5",
             "instanceid": self.instance_id,
             "requestid": self.__generate_id(),
             "format": "json",
