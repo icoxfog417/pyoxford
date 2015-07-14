@@ -3,7 +3,7 @@ Python Client for Microsoft [Project Oxford](https://www.projectoxford.ai/).
 
 ## Speech APIs
 
-```
+```python
 import pyoxford
 
 text = "welcome to microsoft oxford speech api"
