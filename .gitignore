@@ -69,4 +69,4 @@ target/
 venv
 MANIFEST
 account.yaml
-*.wav
+tests/data

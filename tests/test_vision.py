@@ -11,6 +11,8 @@ class TestVision(unittest.TestCase):
         result = api.analyze("https://oxfordportal.blob.core.windows.net/vision/Analysis/4.jpg")
         self.assertTrue(result.request_id)
         self.assertTrue(result.adult.isRacyContent)
+        for c in result.categories:
+            print(c.name)
 
     def test_vision_analysis_by_image(self):
         api = pyoxford.vision(envs.FILE_PATH)
