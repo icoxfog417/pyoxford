@@ -4,7 +4,7 @@ import requests
 import platform
 
 
-class SpeechAPI():
+class Speech():
     HOST = "https://speech.platform.bing.com"
     USER_AGENT = "pyoxford.SpeechAPI"
     UNIQUE_ID = str(uuid.uuid4()).replace("-", "")
