@@ -52,4 +52,22 @@ for c in result.categories:
 see also official document.
 
 * [Analyze an image](https://www.projectoxford.ai/doc/vision/visual-features)
-* [Computer Vision API](https://dev.projectoxford.ai/docs/services/54ef139a49c3f70a50e79b7d/operations/550a323849c3f70b34ba2f8d)
+* [Computer Vision API #Analyze an image](https://dev.projectoxford.ai/docs/services/54ef139a49c3f70a50e79b7d/operations/550a323849c3f70b34ba2f8d)
+
+### OCR
+
+```python
+import pyoxford
+
+api = pyoxford.vision("your_primary_key")
+result = api.ocr("https://oxfordportal.blob.core.windows.net/vision/OpticalCharacterRecognition/1.jpg")
+
+doc = result.to_document()
+for par in doc:
+    print("\n".join(par))
+```
+
+see also official document.
+
+* [Optical Character Recognition](https://www.projectoxford.ai/doc/vision/OCR)
+* [Computer Vision API #OCR](https://dev.projectoxford.ai/docs/services/54ef139a49c3f70a50e79b7d/operations/5527970549c3f723cc5363e4)
