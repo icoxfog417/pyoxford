@@ -15,7 +15,7 @@ class VisualFeatures(Enum):
 
 
 class Vision():
-    ANALYZE_URL = "https://api.projectoxford.ai/vision/v1/analyses"
+    HOST = "https://api.projectoxford.ai/vision/v1/"
 
     def __init__(self, ocp_apim_key):
         self.ocp_apim_key = ocp_apim_key
@@ -28,25 +28,15 @@ class Vision():
         :return:
         """
 
-        headers = {
-            "Ocp-Apim-Subscription-Key": self.ocp_apim_key
-        }
         params = {
             "visualFeatures": visual_features.value
         }
-        data = {}
+        headers, body = self.__create_header_and_body(image_url_or_binary)
 
-        if isinstance(image_url_or_binary, str):
-            headers["Content-type"] = "application/json"
-            data = json.dumps({"Url": image_url_or_binary})
-        else:
-            headers["Content-type"] = "application/octet-stream"
-            data = image_url_or_binary
+        url = self.HOST + "/analyses" + "?" + urllib.parse.urlencode(params)
+        response = requests.post(url, headers=headers, data=body)
 
-        url = self.ANALYZE_URL + "?" + urllib.parse.urlencode(params)
-        response = requests.post(url, headers=headers, data=data)
-
-        resp = {}
+        analyzed = None
         if response.ok:
             resp = response.json()
             analyzed = AnalyzeResult(resp)
@@ -54,6 +44,44 @@ class Vision():
             response.raise_for_status()
 
         return analyzed
+
+    def ocr(self, image_url_or_binary, language="", detect_orientation=True):
+        params = {}
+
+        if language:
+            params["language"] = language
+
+        if detect_orientation:
+            params["detectOrientation"] = detect_orientation
+
+        headers, body = self.__create_header_and_body(image_url_or_binary)
+
+        url = self.HOST + "/ocr" + ("" if len(params) == 0 else "?" + urllib.parse.urlencode(params))
+        response = requests.post(url, headers=headers, data=body)
+
+        ocr = None
+        if response.ok:
+            resp = response.json()
+            ocr = OCRResult(resp)
+        else:
+            response.raise_for_status()
+
+        return ocr
+
+    def __create_header_and_body(self, image_url_or_binary):
+        headers = {
+            "Ocp-Apim-Subscription-Key": self.ocp_apim_key
+        }
+        body = {}
+
+        if isinstance(image_url_or_binary, str):
+            headers["Content-type"] = "application/json"
+            body = json.dumps({"Url": image_url_or_binary})
+        else:
+            headers["Content-type"] = "application/octet-stream"
+            body = image_url_or_binary
+
+        return headers, body
 
 
 class AnalyzeResult():
@@ -125,3 +153,34 @@ class AnalyzeResult():
             else:
                 result.append(None)
         return result
+
+
+class OCRResult():
+
+    def __init__(self, result):
+        self.language = result["language"]
+        self.text_angle = float(result["textAngle"])
+        self.orientation = result["orientation"]
+        self.regions = [self._load_region(r) for r in result["regions"]]
+
+    def _load_region(self, region):
+        Region = namedtuple("Region", ["position", "lines"])
+        Line = namedtuple("Line", ["position", "words"])
+        Word = namedtuple("Word", ["position", "text"])
+        get_position = lambda p: [float(x) for x in p["boundingBox"].split(",")]
+
+        to_w = lambda w: Word(get_position(w), w["text"])
+        to_l = lambda l: Line(get_position(l), [to_w(w) for w in l["words"]])
+        to_r = lambda r: Region(get_position(r), [to_l(l) for l in r["lines"]])
+
+        result = to_r(region)
+        return result
+
+    def to_document(self):
+        document = []
+        to_sentence = lambda l: " ".join([w.text for w in l.words])
+        for r in self.regions:
+            sentence = [to_sentence(l) for l in r.lines]
+            document.append(sentence)
+
+        return document

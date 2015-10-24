@@ -22,3 +22,12 @@ class TestVision(unittest.TestCase):
             result = api.analyze(image)
             self.assertTrue(result.request_id)
             self.assertEqual("jpeg", result.metadata.format.lower())
+
+    def test_vision_ocr(self):
+        api = pyoxford.vision(envs.FILE_PATH)
+        result = api.ocr("https://oxfordportal.blob.core.windows.net/vision/OpticalCharacterRecognition/1.jpg")
+        self.assertTrue(result.language)
+        self.assertTrue(len(result.regions) > 0)
+        d = result.to_document()
+        for p in d:
+            print("\n".join(p))
