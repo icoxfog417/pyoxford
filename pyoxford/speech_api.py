@@ -11,7 +11,7 @@ class Speech():
 
     def __init__(self, client_id, client_secret):
         self.instance_id = self.__generate_id()
-        self.token = ""
+        self.__token = ""
         self.authorize(client_id, client_secret)
 
     def authorize(self, client_id, client_secret):
@@ -31,7 +31,7 @@ class Speech():
         response = requests.post(url, data=params, headers=headers)
         if response.ok:
             _body = response.json()
-            self.token = _body["access_token"]
+            self.__token = _body["access_token"]
         else:
             response.raise_for_status()
 
@@ -48,7 +48,7 @@ class Speech():
         headers = {
             "Content-type": "application/ssml+xml",
             "X-Microsoft-OutputFormat": "riff-16khz-16bit-mono-pcm",
-            "Authorization": "Bearer " + self.token,
+            "Authorization": "Bearer " + self.__token,
             "X-Search-AppId": self.UNIQUE_ID,
             "X-Search-ClientID": self.instance_id,
             "User-Agent": self.USER_AGENT
@@ -82,7 +82,7 @@ class Speech():
 
         url = self.HOST + "/recognize/query?" + urllib.parse.urlencode(params)
         headers = {"Content-type": "audio/wav; samplerate={0}".format(samplerate),
-                   "Authorization": "Bearer " + self.token,
+                   "Authorization": "Bearer " + self.__token,
                    "X-Search-AppId": self.UNIQUE_ID,
                    "X-Search-ClientID": self.instance_id,
                    "User-Agent": self.USER_AGENT}

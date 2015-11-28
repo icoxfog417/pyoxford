@@ -18,7 +18,7 @@ class Vision():
     HOST = "https://api.projectoxford.ai/vision/v1/"
 
     def __init__(self, ocp_apim_key):
-        self.ocp_apim_key = ocp_apim_key
+        self.__ocp_apim_key = ocp_apim_key
 
     def analyze(self, image_url_or_binary, visual_features=VisualFeatures.All):
         """
@@ -70,7 +70,7 @@ class Vision():
 
     def __create_header_and_body(self, image_url_or_binary):
         headers = {
-            "Ocp-Apim-Subscription-Key": self.ocp_apim_key
+            "Ocp-Apim-Subscription-Key": self.__ocp_apim_key
         }
         body = {}
 
