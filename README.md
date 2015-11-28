@@ -8,6 +8,9 @@ pip install pyoxford
 ```
 
 And you have to prepare Microsoft Azure account to use each services.
+Once you get the account, activate apis as below.
+
+![how_to_use_project_oxford](./how_to_use_project_oxford.png)
 
 ## Speech APIs
 
@@ -71,3 +74,18 @@ see also official document.
 
 * [Optical Character Recognition](https://www.projectoxford.ai/doc/vision/OCR)
 * [Computer Vision API #OCR](https://dev.projectoxford.ai/docs/services/54ef139a49c3f70a50e79b7d/operations/5527970549c3f723cc5363e4)
+
+## Translator API
+
+[Translator API](https://datamarket.azure.com/dataset/bing/microsofttranslator) is not project oxford's api, but it is very useful to use with speech api and so on.
+To use this API, you have to do step1 & step2 of [Get started](http://www.microsoft.com/en-us/translator/getstarted.aspx).
+
+```python
+import pyoxford
+
+api = pyoxford.translator("your_client_id", "your_client_secret")
+result = api.translate("My name is John.", "ja")
+
+if "私の名前はジョンです。" == result:
+    print("Well translated!!")
+```

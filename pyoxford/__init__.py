@@ -20,6 +20,17 @@ def vision(path_or_key=""):
 
     return api
 
+def translator(path_or_client_id="", client_secret=""):
+    from pyoxford.translator_api import Translator
+    api = None
+    if path_or_client_id and client_secret:
+        api = Translator(path_or_client_id, client_secret)
+    else:
+        key = _read_key(path_or_client_id, "translator")
+        api = Translator(key.primary, key.secondary)
+
+    return api
+
 def _read_key(path, service_name):
     import yaml
     from collections import namedtuple
