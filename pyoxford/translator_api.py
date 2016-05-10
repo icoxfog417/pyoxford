@@ -1,7 +1,10 @@
-import urllib.parse
 from xml.etree import ElementTree
 import requests
 
+try:
+    from urllib.parse import urlencode 
+except ImportError:
+    from urllib import urlencode
 
 class Translator(object):
     AUTH_URL = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13"
@@ -17,7 +20,7 @@ class Translator(object):
             "Content-type": "application/x-www-form-urlencoded"
         }
 
-        params = urllib.parse.urlencode({
+        params = urlencode({
             "grant_type": "client_credentials",
             "client_id": client_id,
             "client_secret": client_secret,
@@ -35,7 +38,7 @@ class Translator(object):
         params = {
             "text": text
         }
-        url = self.API_ROOT + "/Detect?" + urllib.parse.urlencode(params)
+        url = self.API_ROOT + "/Detect?" + urlencode(params)
         resp = requests.get(url, headers=self.__make_header())
         result = {}
         if resp.ok:
@@ -56,7 +59,7 @@ class Translator(object):
         if lang_from:
             params["from"] = lang_from
 
-        url = self.API_ROOT + "/Translate?" + urllib.parse.urlencode(params)
+        url = self.API_ROOT + "/Translate?" + urlencode(params)
         resp = requests.get(url, headers=self.__make_header())
         result = {}
         if resp.ok:
