@@ -6,6 +6,7 @@ try:
 except ImportError:
     from urllib import urlencode
 
+
 class Translator(object):
     AUTH_URL = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13"
     API_ROOT = "http://api.microsofttranslator.com/v2/Http.svc"

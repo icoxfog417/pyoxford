@@ -7,6 +7,7 @@ try:
 except ImportError:
     from urllib import urlencode
 
+
 class Speech():
     HOST = "https://speech.platform.bing.com"
     USER_AGENT = "pyoxford.SpeechAPI"
