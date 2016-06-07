@@ -1,7 +1,11 @@
 import uuid
-import urllib.parse
 import requests
 import platform
+
+try:
+    from urllib.parse import urlencode 
+except ImportError:
+    from urllib import urlencode
 
 
 class Speech():
@@ -21,7 +25,7 @@ class Speech():
             "Content-type": "application/x-www-form-urlencoded"
         }
 
-        params = urllib.parse.urlencode(
+        params = urlencode(
             {"grant_type": "client_credentials",
              "client_id": client_id,
              "client_secret": client_secret,
@@ -80,7 +84,7 @@ class Speech():
             "scenarios": scenarios,
         }
 
-        url = self.HOST + "/recognize/query?" + urllib.parse.urlencode(params)
+        url = self.HOST + "/recognize/query?" + urlencode(params)
         headers = {"Content-type": "audio/wav; samplerate={0}".format(samplerate),
                    "Authorization": "Bearer " + self.__token,
                    "X-Search-AppId": self.UNIQUE_ID,

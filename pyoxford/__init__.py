@@ -9,6 +9,7 @@ def speech(path_or_client_id="", client_secret=""):
 
     return api
 
+
 def vision(path_or_key=""):
     from pyoxford.vision_api import Vision
     api = None
@@ -20,6 +21,7 @@ def vision(path_or_key=""):
 
     return api
 
+
 def translator(path_or_client_id="", client_secret=""):
     from pyoxford.translator_api import Translator
     api = None
@@ -30,6 +32,7 @@ def translator(path_or_client_id="", client_secret=""):
         api = Translator(key.primary, key.secondary)
 
     return api
+
 
 def _read_key(path, service_name):
     import yaml

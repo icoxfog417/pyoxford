@@ -1,21 +1,27 @@
 from enum import Enum
 import json
 from collections import namedtuple
-import urllib.parse
 import requests
+
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 
 class VisualFeatures(Enum):
+    Categories = "Categories"
+    Tags = "Tags"
+    Description = "Description"
+    Faces = "Faces"
     ImageType = "ImageType"
     Color = "Color"
-    Faces = "Faces"
     Adult = "Adult"
-    Categories = "Categories"
-    All = "All"
+    All = "Categories,Tags,Description,Faces,ImageType,Color,Adult"
 
 
 class Vision():
-    HOST = "https://api.projectoxford.ai/vision/v1/"
+    HOST = "https://api.projectoxford.ai/vision/v1.0"
 
     def __init__(self, ocp_apim_key):
         self.__ocp_apim_key = ocp_apim_key
@@ -31,9 +37,11 @@ class Vision():
         params = {
             "visualFeatures": visual_features.value
         }
+
+        params_string = "?" + urlencode(params) if params else ""
         headers, body = self.__create_header_and_body(image_url_or_binary)
 
-        url = self.HOST + "/analyses" + "?" + urllib.parse.urlencode(params)
+        url = self.HOST + "/analyze" + params_string
         response = requests.post(url, headers=headers, data=body)
 
         analyzed = None
@@ -56,7 +64,7 @@ class Vision():
 
         headers, body = self.__create_header_and_body(image_url_or_binary)
 
-        url = self.HOST + "/ocr" + ("" if len(params) == 0 else "?" + urllib.parse.urlencode(params))
+        url = self.HOST + "/ocr" + ("" if len(params) == 0 else "?" + urlencode(params))
         response = requests.post(url, headers=headers, data=body)
 
         ocr = None

@@ -1,5 +1,5 @@
 # pyoxford
-Python Client for Microsoft [Project Oxford](https://www.projectoxford.ai/).
+Simple Python Client for [Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services).
 
 ## Installation
 
@@ -7,10 +7,8 @@ Python Client for Microsoft [Project Oxford](https://www.projectoxford.ai/).
 pip install pyoxford
 ```
 
-And you have to prepare Microsoft Azure account to use each services.
-Once you get the account, activate apis as below.
+And you have to prepare Cognitive Service account to use each services.
 
-![how_to_use_project_oxford](./how_to_use_project_oxford.png)
 
 ## Speech APIs
 
